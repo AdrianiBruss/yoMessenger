@@ -41,7 +41,8 @@ body header.header-app span.logo {
   background: url('../assets/images/logo.png');
   margin: 10px;
 }
-body header.header-app a {
+body header.header-app a,
+body header.header-app p {
   display: inline-block;
   line-height: 60px;
   margin: 0 5px;
