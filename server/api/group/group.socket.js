@@ -16,7 +16,15 @@ exports.register = function(socket) {
 }
 
 function onSave(socket, doc, cb) {
-  socket.emit('group:save', doc);
+
+  for (var i= 0; i<doc.users.length; i++){
+
+    var user_id = doc.users[i];
+    var tag = 'group_'+user_id + ':save';
+
+    socket.emit(tag, doc);
+  }
+  
 }
 
 function onRemove(socket, doc, cb) {

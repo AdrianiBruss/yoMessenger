@@ -21,9 +21,6 @@ angular.module('myappApp')
           $scope.userId = Auth.getCurrentUser();
           $scope.groupAdd = function(form){
 
-            console.log(form);
-            console.log($scope.userId._id);
-
             groupFactory.save({
               userId: $scope.userId._id,
               name:form.text,
