@@ -8,9 +8,8 @@ angular.module('myappApp')
         templateUrl: 'app/group/group.html',
         controller: 'GroupCtrl',
         resolve:{
-          groups:function(groupFactory, Auth){
-            var user = Auth.getCurrentUser();
-            return groupFactory.query({userId: user._id}).$promise;
+          groups:function(groupFactory){
+            return groupFactory.query().$promise;
           }
         }
       })
@@ -22,17 +21,43 @@ angular.module('myappApp')
           $scope.groupAdd = function(form){
 
             groupFactory.save({
-              userId: $scope.userId._id,
               name:form.text,
-              _creator: $scope.userId._id,
               emails:form.email
               })
               .$promise
               .then(function(){
-                console.log('save done');
                 $state.go('group');
               });
           };
+        }
+      })
+      .state('group_show', {
+        url: '/group/:id',
+        templateUrl: 'app/group/group_show.html',
+        controller: function($scope, messageFactory, messages, Auth, $state, socket){
+
+          $scope.messages = messages;
+          $scope.group = $state.params.id;
+
+          $scope.addMessage = function(form){
+
+            messageFactory.save({
+              content: form.text,
+              group : $scope.group
+
+
+            }).$promise
+              .then(function(){
+                form.text = '';
+              });
+          };
+
+          socket.syncUpdates('group_'+$scope.group ,$scope.messages);
+        },
+        resolve:{
+          messages:function(messageFactory, $stateParams){
+            return messageFactory.query({id: $stateParams.id}).$promise;
+          }
         }
       });
   });

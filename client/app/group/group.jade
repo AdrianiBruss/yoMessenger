@@ -2,5 +2,6 @@ div(ng-include='"components/navbar/navbar.html"')
 .col-md-12
     p Fucking amazing app
     ul
-     li(ng-repeat='g in group') {{g.name}}
+     li(ng-repeat='g in group')
+      a(ui-sref="group_show({id: '{{g._id}}' })") {{g.name}}
 
