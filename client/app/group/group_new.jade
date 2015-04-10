@@ -1,0 +1,8 @@
+div(ng-include='"components/navbar/navbar.html"')
+form.form-new(name="form", ng-submit='groupAdd(form)' novalidate)
+  input(type='text', placeholder='Name of group', name="group" ng-model="form.text" required)
+  input(type='text', placeholder='emails of users you want to invite', name="email", ng-list=";" ng-model="form.email" required)
+  br
+  input(type='submit', value="Add Group")
+
+

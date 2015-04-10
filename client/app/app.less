@@ -22,6 +22,10 @@
   font-weight: normal;
   font-style: normal;
 }
+
+@white: #fff;
+@grey: #34495E;
+@red: #F64747;
 /**
  * App-wide Styles
  */
@@ -68,7 +72,7 @@ body{
       ul{
 
         display: flex;
-        flex: 1;
+        flex: 2;
 
         &:first-child{
 
@@ -83,6 +87,44 @@ body{
 
 
         }
+
+      }
+
+    }
+
+  }
+
+  form.form-new{
+
+    width: 300px;
+    margin: 30px auto;
+
+    input{
+
+      border:none;
+      border-bottom: 1px solid @grey;
+      width: 100%;
+      height: 40px;
+      padding: 0 20px;
+      outline: none;
+      color: @grey;
+
+      &[type="submit"]{
+
+        border: none;
+        margin-top: 20px;
+        background-color:@grey;
+        color: @white;
+
+      }
+
+    }
+
+    &.ng-invalid{
+
+      input[type="submit"]{
+
+        background-color: @red;
 
       }
 

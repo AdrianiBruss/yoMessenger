@@ -55,7 +55,7 @@ body header.header-app nav.nav-app {
 }
 body header.header-app nav.nav-app ul {
   display: flex;
-  flex: 1;
+  flex: 2;
 }
 body header.header-app nav.nav-app ul:first-child {
   flex: 1;
@@ -63,4 +63,26 @@ body header.header-app nav.nav-app ul:first-child {
 body header.header-app nav.nav-app ul li {
   display: inline-block;
   margin: 0 10px;
+}
+body form.form-new {
+  width: 300px;
+  margin: 30px auto;
+}
+body form.form-new input {
+  border: none;
+  border-bottom: 1px solid #34495e;
+  width: 100%;
+  height: 40px;
+  padding: 0 20px;
+  outline: none;
+  color: #34495e;
+}
+body form.form-new input[type="submit"] {
+  border: none;
+  margin-top: 20px;
+  background-color: #34495e;
+  color: #ffffff;
+}
+body form.form-new.ng-invalid input[type="submit"] {
+  background-color: #f64747;
 }
