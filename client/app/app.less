@@ -94,7 +94,48 @@ body{
 
   }
 
-  form.form-new{
+  div.message-container{
+
+    width: 400px;
+    margin: 30px auto;
+
+    ul{
+
+      li{
+
+        list-style-type: none;
+        width: 100px;
+        background-color: #34495e;
+        height: 40px;
+        border-radius: 10px;
+        text-align: left;
+        line-height: 20px;
+        color: #ffffff;
+        padding: 10px;
+        position: relative;
+        margin: 5px;
+
+        &:after{
+
+          content: "";
+          width: 0;
+          height: 0;
+          border-right: 10px solid transparent;
+          border-left: 10px solid transparent;
+          border-bottom: 10px solid @grey;
+          position: absolute;
+          right: -9px;
+          bottom: 0;
+
+        }
+
+      }
+
+    }
+
+  }
+
+  form{
 
     width: 300px;
     margin: 30px auto;
@@ -130,8 +171,15 @@ body{
 
     }
 
+    &.form-show{
+
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+
+    }
+
   }
-
-
 
 }

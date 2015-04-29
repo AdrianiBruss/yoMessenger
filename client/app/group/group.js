@@ -45,7 +45,6 @@ angular.module('myappApp')
               content: form.text,
               group : $scope.group
 
-
             }).$promise
               .then(function(){
                 form.text = '';

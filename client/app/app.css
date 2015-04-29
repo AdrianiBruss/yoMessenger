@@ -64,11 +64,39 @@ body header.header-app nav.nav-app ul li {
   display: inline-block;
   margin: 0 10px;
 }
-body form.form-new {
+body div.message-container {
+  width: 400px;
+  margin: 30px auto;
+}
+body div.message-container ul li {
+  list-style-type: none;
+  width: 100px;
+  background-color: #34495e;
+  height: 40px;
+  border-radius: 10px;
+  text-align: left;
+  line-height: 20px;
+  color: #ffffff;
+  padding: 10px;
+  position: relative;
+  margin: 5px;
+}
+body div.message-container ul li:after {
+  content: "";
+  width: 0;
+  height: 0;
+  border-right: 10px solid transparent;
+  border-left: 10px solid transparent;
+  border-bottom: 10px solid #34495e;
+  position: absolute;
+  right: -9px;
+  bottom: 0;
+}
+body form {
   width: 300px;
   margin: 30px auto;
 }
-body form.form-new input {
+body form input {
   border: none;
   border-bottom: 1px solid #34495e;
   width: 100%;
@@ -77,12 +105,18 @@ body form.form-new input {
   outline: none;
   color: #34495e;
 }
-body form.form-new input[type="submit"] {
+body form input[type="submit"] {
   border: none;
   margin-top: 20px;
   background-color: #34495e;
   color: #ffffff;
 }
-body form.form-new.ng-invalid input[type="submit"] {
+body form.ng-invalid input[type="submit"] {
   background-color: #f64747;
+}
+body form.form-show {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
 }
