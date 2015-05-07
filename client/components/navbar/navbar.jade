@@ -37,4 +37,4 @@ header.header-app(ng-controller='NavbarCtrl')
         a(href='', ng-click='logout()') Logout
 
       li(ng-show='isLoggedIn()')
-        p {{ getCurrentUser().name }}
+        p.username {{ getCurrentUser().name }}

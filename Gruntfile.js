@@ -9,6 +9,8 @@ module.exports = function (grunt) {
     localConfig = {};
   }
 
+  var shell = require('shelljs');
+
   // Load grunt tasks automatically, when needed
   require('jit-grunt')(grunt, {
     express: 'grunt-express-server',
@@ -601,6 +603,7 @@ module.exports = function (grunt) {
         'clean:server',
         'env:all',
         'env:test',
+        'dropdb',
         'concurrent:test',
         'injector',
         'wiredep',
@@ -639,4 +642,12 @@ module.exports = function (grunt) {
     'test',
     'build'
   ]);
+
+  grunt.registerTask('dropdb', 'dropdatabase', function(){
+    var config = require('./server/config/environment/'+process.env.NODE_ENV+'.js');
+    if(shell.exec('mongo '+(config.mongo.uri).replace('mongodb://', '')+ ' --eval "db;db.dropDatabase()"').code != 0){
+      shell.echo('error: mongo');
+      shell.exit(1);
+    }
+  })
 };

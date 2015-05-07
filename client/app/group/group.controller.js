@@ -7,4 +7,9 @@ angular.module('myappApp')
     var tag = 'group_'+user._id;
     socket.syncUpdates(tag, $scope.group);
 
+    // éviter de polluer avec trop de connections
+    $scope.$on('$destroy',function(){
+      socket.unsyncUpdates(tag);
+    });
+
   });

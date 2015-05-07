@@ -15,6 +15,7 @@ describe('Main View', function() {
     page.goButton.click().then(function (){
       browser.waitForAngular();
       expect(browser.getLocationAbsUrl()).toBe('/');
+      expect(page.userName.getText()).toBe('Test Admin');
     })
   });
 });
