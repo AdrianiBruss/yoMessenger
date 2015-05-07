@@ -20,6 +20,47 @@ var options = {
 var users, token, group, user;
 
 
+function connectUser(user, callback){
+
+  user.client = io.connect('http://localhost:9000', options)
+    .on('connect', function(a, b){
+      return callback(null, user);
+    })
+    .on('connect_error', function(a, b){
+      return callback(a, b);
+    })
+    .on('timeout', function(a, b){
+      return callback(a, b);
+    })
+
+
+}
+
+
+function connectUsers(done){
+
+  async.parallel([
+
+    function(callback){
+      connectUser(users[0],callback);
+    },
+
+    function(callback){
+      connectUser(users[1],callback);
+    }
+
+  ],
+
+    function(err, result){
+
+      users = result;
+      done(err);
+
+    })
+
+}
+
+
 function login(done, userIndex) {
   users = userFixture.getUsers();
   userIndex = userIndex || 0;
@@ -35,11 +76,17 @@ function login(done, userIndex) {
     })
 }
 
+
+
 before(function (done) {
   userFixture.createUsers(done);
 });
 before(function (done) {
   login(done);
+});
+
+before(function(done){
+  connectUsers(done);
 });
 
 
@@ -237,10 +284,13 @@ describe('DELETE /api/groups/group', function () {
           })
       });
     });
+
     it('should send new group by socketio to group subscriber users', function (done) {
       // connect to user2 and wait for data
       // crate group for user2
       // user 2 shouls receive group
+
+
 
       var data = {
         _creator: user._id,
@@ -249,17 +299,52 @@ describe('DELETE /api/groups/group', function () {
       };
 
 
-      var checkMessage = function(client, tag){
 
-        client.on(tag, function(msg){
+      var checkMess = function(user, callback){
 
-          data._creator.should.equal(msg._creator);
+        var tag = 'group_'+user._id+':save';
+
+        user.client.on(tag, function(msg){
+
+          data._creator.toString().should.equal(msg._creator);
           data.name.should.equal(msg.name);
-          client.disconnect();
+          user.client.disconnect();
+          return callback(null);
 
         })
 
       };
+
+      var checkMessage = function(done){
+
+        async.parallel([
+
+          function(callback){
+            checkMess(users[0], callback);
+
+            },
+
+            function(callback){
+
+              checkMess(users[1], callback);
+
+            }
+          ],
+          function(err, result){
+            users = result;
+            done(err);
+          })
+
+      };
+
+      checkMessage(done);
+
+      Group.create(data, function (err, group) {
+        if(err) done(err);
+        console.log('group created');
+      });
+
+
 
       var client1, client2;
       var socketURL = 'http://localhost:9000';
@@ -273,18 +358,15 @@ describe('DELETE /api/groups/group', function () {
 
       client1.on('connect', function(a, b){
 
-        console.log('connected');
         checkMessage(client1, socketURL1);
+
         Group.create(data, function (err, group) {
           if(err) done(err);
           console.log('group created');
         });
 
+
       });
-
-
-
-
     });
   });
 });
