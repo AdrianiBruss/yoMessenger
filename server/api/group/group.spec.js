@@ -370,3 +370,47 @@ describe('DELETE /api/groups/group', function () {
     });
   });
 });
+
+describe('User.create', function(){
+
+  before(function(done){
+    User.findOne({email:'toto@toto.com'}, function(err, user){
+      if (err) done(err);
+
+      if(!user) return done();
+      user.remove(function(err, user){
+        done(err);
+      })
+    })
+  });
+
+
+  it('should update group user is email subscriber', function(done){
+
+
+    var data = {
+      _creator: user._id,
+      name: 'test',
+      emails: ['bla@bla.com', users[0].email, 'toto@toto.com']
+    };
+
+    Group.create(data, function (err, group) {
+      if(err) done(err);
+      console.log('group created');
+
+      userFixture.createUser('toto@toto.com', function(err, user){
+
+        
+
+        console.log('toto created');
+
+        (!!group.users.id(user._id).should.be.equal(true));
+
+      });
+
+    });
+
+
+  })
+
+});
