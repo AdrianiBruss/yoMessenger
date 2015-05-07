@@ -400,7 +400,7 @@ describe('User.create', function(){
 
       userFixture.createUser('toto@toto.com', function(err, user){
 
-        
+
 
         console.log('toto created');
 
