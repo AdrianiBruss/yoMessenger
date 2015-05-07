@@ -7,6 +7,15 @@ var userFixture = require('../user/user.fixtures');
 var User = require('../user/user.model');
 var Group = require('../group/group.model');
 var async = require('async');
+var io = require('socket.io-client');
+
+var options = {
+  transports: ['websocket'],
+  'force new connection': true,
+  path: '/socket.io-client'
+};
+
+
 
 var users, token, group, user;
 
@@ -202,6 +211,7 @@ describe('DELETE /api/groups/group', function () {
           })
       });
     });
+
     it('should respond with no error', function (done) {
       var data = {
         _creator: user._id,
@@ -226,6 +236,55 @@ describe('DELETE /api/groups/group', function () {
             done();
           })
       });
+    });
+    it('should send new group by socketio to group subscriber users', function (done) {
+      // connect to user2 and wait for data
+      // crate group for user2
+      // user 2 shouls receive group
+
+      var data = {
+        _creator: user._id,
+        name: 'test',
+        emails: ['bla@bla.com', users[1].email, 'toto@toto.com']
+      };
+
+
+      var checkMessage = function(client, tag){
+
+        client.on(tag, function(msg){
+
+          data._creator.should.equal(msg._creator);
+          data.name.should.equal(msg.name);
+          client.disconnect();
+
+        })
+
+      };
+
+      var client1, client2;
+      var socketURL = 'http://localhost:9000';
+      var socketURL1 = 'group_'+users[0]._id+':save';
+
+      client1 = io.connect(socketURL, options);
+
+      client1.on('connect_error', function(err){
+        console.log('error '+err);
+      });
+
+      client1.on('connect', function(a, b){
+
+        console.log('connected');
+        checkMessage(client1, socketURL1);
+        Group.create(data, function (err, group) {
+          if(err) done(err);
+          console.log('group created');
+        });
+
+      });
+
+
+
+
     });
   });
 });
